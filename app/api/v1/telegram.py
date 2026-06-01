@@ -6,15 +6,15 @@ from app.api.deps import get_db, get_current_active_user
 from app.models.users import User
 from app.models.telegram_users import TelegramUser, TelegramQueryLog
 from app.schemas.telegram import (
-    TelegramUserCreate, TelegramUserUpdate, TelegramUser,
-    TelegramQueryLogCreate, TelegramQueryLog
+    TelegramUserCreate, TelegramUserUpdate, TelegramUser as TelegramUserSchema,
+    TelegramQueryLogCreate, TelegramQueryLog as TelegramQueryLogSchema,
 )
 from app.telegram_bot.analytics import generate_analytics_report
 
 router = APIRouter()
 
 
-@router.post("/users/", response_model=TelegramUser, status_code=status.HTTP_201_CREATED)
+@router.post("/users/", response_model=TelegramUserSchema, status_code=status.HTTP_201_CREATED)
 def create_telegram_user(
     telegram_user: TelegramUserCreate,
     db: Session = Depends(get_db),
@@ -36,7 +36,7 @@ def create_telegram_user(
     return db_telegram_user
 
 
-@router.get("/users/", response_model=List[TelegramUser])
+@router.get("/users/", response_model=List[TelegramUserSchema])
 def list_telegram_users(
     skip: int = 0,
     limit: int = 100,
@@ -48,7 +48,7 @@ def list_telegram_users(
     return users
 
 
-@router.get("/users/{telegram_user_id}", response_model=TelegramUser)
+@router.get("/users/{telegram_user_id}", response_model=TelegramUserSchema)
 def get_telegram_user(
     telegram_user_id: int,
     db: Session = Depends(get_db),
@@ -61,7 +61,7 @@ def get_telegram_user(
     return user
 
 
-@router.put("/users/{telegram_user_id}", response_model=TelegramUser)
+@router.put("/users/{telegram_user_id}", response_model=TelegramUserSchema)
 def update_telegram_user(
     telegram_user_id: int,
     user_update: TelegramUserUpdate,
@@ -82,7 +82,7 @@ def update_telegram_user(
     return user
 
 
-@router.post("/users/{telegram_user_id}/verify", response_model=TelegramUser)
+@router.post("/users/{telegram_user_id}/verify", response_model=TelegramUserSchema)
 def verify_telegram_user(
     telegram_user_id: int,
     db: Session = Depends(get_db),
@@ -110,7 +110,7 @@ def get_analytics(
     return report
 
 
-@router.get("/query-logs/", response_model=List[TelegramQueryLog])
+@router.get("/query-logs/", response_model=List[TelegramQueryLogSchema])
 def list_query_logs(
     skip: int = 0,
     limit: int = 100,

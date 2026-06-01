@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="StorAI · Asistente inteligente de ferretería. Consulta precio y disponibilidad por chat." />
+  <title>StorAI — Asistente inteligente de ferretería</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <!-- Top nav -->
+  <header class="public-nav">
+    <div class="container">
+      <a href="/" class="brand-mark">
+        <span class="logo">S</span>
+        <span>StorAI</span>
+      </a>
+      <nav>
+        <a href="#features">Características</a>
+        <a href="#chat">Asistente</a>
+        <a href="/docs">API</a>
+        <a href="/admin">Acceso staff →</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="fade-up">
+        <span class="eyebrow">Powered by AI · 24/7</span>
+        <h1>La ferretería <br/>responde antes <br/>que tú preguntes.</h1>
+        <p class="lead">
+          Consulta precio, marca y disponibilidad de cualquier producto en segundos.
+          Sin caminar pasillos, sin esperar atención. Solo escribe y obtén la respuesta.
+        </p>
+        <div class="row gap-12">
+          <a href="#chat" class="btn btn-gradient">
+            Hablar con el asistente
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#features" class="btn btn-ghost">Ver características</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="value">31</div>
+            <div class="label">productos en catálogo</div>
+          </div>
+          <div class="stat">
+            <div class="value">7</div>
+            <div class="label">categorías</div>
+          </div>
+          <div class="stat">
+            <div class="value">&lt;1s</div>
+            <div class="label">respuesta promedio</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero preview: chat mock -->
+      <div class="hero-preview fade-up delay-2">
+        <div class="preview-header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="preview-url">storai.com / asistente</div>
+        </div>
+        <div class="mock-chat">
+          <div class="mock-msg user">¿Tienen destornillador Phillips?</div>
+          <div class="mock-msg bot">¡Sí! Encontré varios. Aquí el más popular:</div>
+          <div class="mock-msg bot with-product">
+            Destornillador Phillips #2, marca Stanley.
+            <div class="mock-product">
+              <div class="thumb">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <div class="meta">
+                <div class="name">Destornillador Phillips #2</div>
+                <div><span class="price">$7.50</span> · ✓ Disponible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Qué puedes hacer</span>
+        <h2>Todo lo que necesitas, en una conversación.</h2>
+        <p>Una interfaz familiar — chat — sobre un catálogo conectado en tiempo real.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature fade-up">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3>Búsqueda inteligente</h3>
+          <p>Encuentra productos por nombre, SKU, marca o categoría. El asistente entiende lenguaje natural.</p>
+        </div>
+
+        <div class="feature fade-up delay-1">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3>Stock en tiempo real</h3>
+          <p>Confirma disponibilidad antes de pasar por la tienda. Sin sorpresas al llegar.</p>
+        </div>
+
+        <div class="feature fade-up delay-2">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Respuesta instantánea</h3>
+          <p>Sin filas, sin llamadas. Obtén información del catálogo en menos de un segundo.</p>
+        </div>
+
+        <div class="feature fade-up delay-3">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <h3>Catálogo por categorías</h3>
+          <p>Herramientas, tornillería, electricidad, plomería, pinturas, seguridad y jardinería.</p>
+        </div>
+
+        <div class="feature fade-up delay-2">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Marcas confiables</h3>
+          <p>Stanley, DeWalt, Bosch, Makita, 3M, Phillips, Pavco, Sherwin-Williams y más.</p>
+        </div>
+
+        <div class="feature fade-up delay-3">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>Sin registro</h3>
+          <p>Pregunta lo que quieras, sin crear cuenta. Privacidad por defecto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chat section -->
+  <section id="chat" class="chat-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pruébalo ahora</span>
+        <h2>Pregúntale lo que necesites.</h2>
+        <p>Escribe el producto, marca o SKU. El asistente te responderá con precio y disponibilidad.</p>
+      </div>
+      <div id="chat"
+           data-endpoint="/api/v1/chat/customer"
+           data-title="StorAI Bot"
+           data-subtitle="Asistente del catálogo · 24/7"
+           data-greeting="¡Hola! Soy el asistente de StorAI. ¿Qué producto estás buscando?"
+           data-suggestions="Tornillos hexagonales|Destornillador Phillips|Bombillas LED|Casco de seguridad"
+           data-mode="customer"></div>
+    </div>
+  </section>
+
+  <footer class="public-footer">
+    <div class="container">
+      <div>StorAI © 2026 · Sistema integral de inventario y ecommerce</div>
+      <div class="row gap-16">
+        <a href="/docs">Documentación API</a>
+        <a href="/admin">Acceso staff</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>

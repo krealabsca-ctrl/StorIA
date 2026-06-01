@@ -85,7 +85,12 @@ class Product(BaseMixin, Base):
     # Stock
     stock_current = Column(Integer, default=0, nullable=False)
     stock_minimum = Column(Integer, default=5, nullable=False)
-    stock_status = Column(Enum(StockStatus), default=StockStatus.AVAILABLE, nullable=False)
+    stock_status = Column(
+        Enum(StockStatus, name="stock_status",
+             values_callable=lambda x: [e.value for e in x]),
+        default=StockStatus.AVAILABLE,
+        nullable=False,
+    )
     
     # Estado
     is_active = Column(Boolean, default=True)
@@ -119,7 +124,11 @@ class StockMovement(BaseMixin, Base):
     __tablename__ = "stock_movements"
     
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
-    movement_type = Column(Enum(MovementType), nullable=False)
+    movement_type = Column(
+        Enum(MovementType, name="movement_type",
+             values_callable=lambda x: [e.value for e in x]),
+        nullable=False,
+    )
     quantity = Column(Integer, nullable=False)
     previous_stock = Column(Integer, nullable=False)
     new_stock = Column(Integer, nullable=False)

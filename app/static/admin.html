@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StorAI Backoffice — Iniciar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <main class="login-page">
+    <!-- Panel izquierdo: branding -->
+    <aside class="login-side">
+      <a href="/" class="brand-mark">
+        <span class="logo">S</span>
+        <span>StorAI</span>
+      </a>
+
+      <div class="pitch">
+        <h2>Control total del inventario en un solo lugar.</h2>
+        <p>Acceso seguro al backoffice. Gestiona productos, ubicaciones, órdenes y conversaciones del bot desde una sola pantalla.</p>
+
+        <div class="pill-list">
+          <div class="pill"><span class="dot"></span>Inventario en tiempo real con alertas de stock bajo</div>
+          <div class="pill"><span class="dot"></span>Ubicación física exacta de cada producto</div>
+          <div class="pill"><span class="dot"></span>Chat administrativo conectado al catálogo</div>
+          <div class="pill"><span class="dot"></span>Roles granulares: admin, manager, warehouse, sales</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Panel derecho: formulario -->
+    <section class="login-form-wrap">
+      <div class="login-card fade-up">
+        <a href="/" class="brand-mark" style="display:inline-flex;">
+          <span class="logo">S</span>
+          <span>StorAI Backoffice</span>
+        </a>
+
+        <h1>Bienvenido de vuelta</h1>
+        <p class="sub">Ingresa tus credenciales para acceder al panel administrativo.</p>
+
+        <div id="error" class="error-msg" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="error-text">Credenciales incorrectas</span>
+        </div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="username">Usuario</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="username" name="username" placeholder="admin" required autofocus autocomplete="username"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password"/>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">
+            <span id="btn-label">Iniciar sesión</span>
+          </button>
+        </form>
+
+        <div class="hint">
+          <div class="h-title">Cuentas de prueba</div>
+          <div class="cred-row"><span>Admin</span><span><code>admin</code> / <code>admin123</code></span></div>
+          <div class="cred-row"><span>Manager</span><span><code>gerente</code> / <code>gerente123</code></span></div>
+          <div class="cred-row"><span>Warehouse</span><span><code>operario</code> / <code>operario123</code></span></div>
+          <div class="cred-row"><span>Sales</span><span><code>vendedor</code> / <code>vendedor123</code></span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("login-form");
+    const errorBox = document.getElementById("error");
+    const errorText = document.getElementById("error-text");
+    const submitBtn = document.getElementById("submit-btn");
+    const btnLabel = document.getElementById("btn-label");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.style.display = "none";
+      submitBtn.disabled = true;
+      btnLabel.textContent = "Validando...";
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("/api/v1/users/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || "Credenciales incorrectas");
+        }
+
+        const data = await res.json();
+        localStorage.setItem("storai_token", data.access_token);
+
+        const me = await fetch("/api/v1/users/users/me", {
+          headers: { Authorization: `Bearer ${data.access_token}` },
+        }).then((r) => r.json());
+        localStorage.setItem("storai_user", JSON.stringify(me));
+
+        window.location.href = "/admin/dashboard";
+      } catch (err) {
+        errorText.textContent = err.message;
+        errorBox.style.display = "flex";
+        submitBtn.disabled = false;
+        btnLabel.textContent = "Iniciar sesión";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -59,7 +59,12 @@ class PurchaseOrder(BaseMixin, Base):
     total_amount = Column(Float, default=0.0, nullable=False)
     
     # Estado
-    status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)
+    status = Column(
+        Enum(OrderStatus, name="purchase_order_status",
+             values_callable=lambda x: [e.value for e in x]),
+        default=OrderStatus.PENDING,
+        nullable=False,
+    )
     notes = Column(Text, nullable=True)
     
     # Relaciones

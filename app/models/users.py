@@ -28,7 +28,12 @@ class User(BaseMixin, Base):
     phone = Column(String(50), nullable=True)
     
     # Rol y estado
-    role = Column(Enum(UserRole), default=UserRole.WAREHOUSE_STAFF, nullable=False)
+    role = Column(
+        Enum(UserRole, name="user_role",
+             values_callable=lambda x: [e.value for e in x]),
+        default=UserRole.WAREHOUSE_STAFF,
+        nullable=False,
+    )
     is_active = Column(Boolean, default=True)
     
     # Relaciones

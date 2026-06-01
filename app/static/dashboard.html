@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StorAI Backoffice — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ============== Sidebar ============== -->
+    <aside class="sidebar">
+      <a href="/admin/dashboard" class="brand-mark">
+        <span class="logo">S</span>
+        <span>StorAI</span>
+      </a>
+
+      <div class="nav-section">
+        <div class="nav-label">General</div>
+        <a class="nav-item active" href="/admin/dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="#products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Productos
+        </a>
+        <a class="nav-item" href="#chat-section">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Asistente
+        </a>
+        <a class="nav-item" href="#users">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Equipo
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Más</div>
+        <a class="nav-item" href="/docs" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          API docs
+        </a>
+        <a class="nav-item" href="/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Vista cliente
+        </a>
+      </div>
+
+      <div class="sidebar-foot">
+        <div style="font-weight:600; color: var(--text); margin-bottom: 4px;">StorAI v1.0</div>
+        Sistema integral de inventario y ecommerce.
+      </div>
+    </aside>
+
+    <!-- ============== Main ============== -->
+    <div class="main">
+
+      <header class="topbar">
+        <h1 class="page-title">Resumen</h1>
+        <div class="topbar-actions">
+          <div class="user-chip" id="user-chip"></div>
+          <button class="btn-logout" id="logout-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Salir
+          </button>
+        </div>
+      </header>
+
+      <div class="page">
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi brand fade-up">
+            <div class="kpi-head">
+              <div class="kpi-label">Productos activos</div>
+              <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+            </div>
+            <div class="kpi-value" id="kpi-products">—</div>
+            <div class="kpi-delta">Catálogo total</div>
+          </div>
+          <div class="kpi warn fade-up delay-1">
+            <div class="kpi-head">
+              <div class="kpi-label">Stock bajo</div>
+              <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            </div>
+            <div class="kpi-value" id="kpi-low">—</div>
+            <div class="kpi-delta">Requieren reposición</div>
+          </div>
+          <div class="kpi danger fade-up delay-2">
+            <div class="kpi-head">
+              <div class="kpi-label">Sin stock</div>
+              <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+            </div>
+            <div class="kpi-value" id="kpi-out">—</div>
+            <div class="kpi-delta">Agotados</div>
+          </div>
+          <div class="kpi teal fade-up delay-3">
+            <div class="kpi-head">
+              <div class="kpi-label">Usuarios del sistema</div>
+              <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            </div>
+            <div class="kpi-value" id="kpi-users">—</div>
+            <div class="kpi-delta">4 roles activos</div>
+          </div>
+        </div>
+
+        <!-- Two-column: tables + chat -->
+        <div class="split">
+          <div class="stack">
+
+            <section class="card" id="products">
+              <header class="card-header">
+                <h3>Productos recientes</h3>
+                <span class="tag info"><span class="tag-dot"></span>Top 10</span>
+              </header>
+              <div class="card-body">
+                <div class="table-wrap">
+                  <table class="tbl">
+                    <thead>
+                      <tr>
+                        <th>SKU</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="products-body">
+                      <tr class="skeleton-row"><td colspan="5">Cargando productos...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" id="users">
+              <header class="card-header">
+                <h3>Equipo</h3>
+                <span class="tag role"><span class="tag-dot"></span>Roles asignados</span>
+              </header>
+              <div class="card-body">
+                <div class="table-wrap">
+                  <table class="tbl">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="users-body">
+                      <tr class="skeleton-row"><td colspan="4">Cargando equipo...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          <aside class="stack" id="chat-section">
+            <div id="chat"
+                 data-endpoint="/api/v1/chat/admin"
+                 data-title="StorAI Admin"
+                 data-subtitle="Asistente del almacén"
+                 data-greeting="Hola. Escribe el nombre de un producto o un SKU (ej. TOR-HEX-001) y te diré ubicación y stock."
+                 data-suggestions="TOR-HEX-001|destornillador phillips|Productos con stock bajo"
+                 data-mode="admin"></div>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/chat.js"></script>
+</body>
+</html>

@@ -9,11 +9,12 @@ StorAI es un sistema robusto que combina:
 
 ## Stack Tecnológico
 
-- **Backend Framework:** FastAPI (Python 3.11+)
-- **Base de Datos:** PostgreSQL 15+
+- **Backend Framework:** FastAPI (Python 3.11 / 3.12 — **no 3.14**)
+- **Base de Datos:** PostgreSQL 15 (vía Docker)
+- **Driver PostgreSQL:** psycopg v3 (`postgresql+psycopg://...`)
 - **ORM:** SQLAlchemy 2.0
 - **Bot de Telegram:** python-telegram-bot v20+
-- **Autenticación:** JWT
+- **Autenticación:** JWT + passlib/bcrypt 4.0.1
 - **API Documentation:** Swagger/OpenAPI automática
 
 ## Estructura de Carpetas
@@ -105,63 +106,122 @@ storai/
 └── README.md
 ```
 
-## Instalación
+## Requisitos previos
 
-### macOS/Linux
+- **Python 3.11 o 3.12** (NO uses 3.14 — pydantic-core 2.23.x no compila contra PyO3 0.22 en 3.14).
+- **Docker Desktop** (para levantar PostgreSQL y Redis sin instalarlos en el host).
+- macOS, Linux o Windows con WSL2.
+
+Si solo tienes Python 3.14 instalado, instala 3.12 con [pyenv](https://github.com/pyenv/pyenv):
+
 ```bash
-# Crear entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-
-# Instalar dependencias
-pip install -r requirements.txt
-
-# Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales (DATABASE_URL, TELEGRAM_BOT_TOKEN, etc.)
-
-# OPCIÓN 1: Usar PostgreSQL local (requiere PostgreSQL instalado)
-# brew install postgresql  # macOS
-# brew services start postgresql
-# createdb storai
-
-# OPCIÓN 2: Usar Docker para PostgreSQL
-# docker-compose up -d
-
-# Ejecutar script de inicialización de base de datos
-python3 scripts/seed_db.py
-
-# Iniciar servidor FastAPI
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
-# Iniciar Bot de Telegram (en terminal separado)
-python3 -m app.telegram_bot.bot
+brew install pyenv
+pyenv install 3.12.8
 ```
 
-### Windows
-```bash
-# Crear entorno virtual
-python -m venv venv
-venv\Scripts\activate
+## Instalación paso a paso (macOS/Linux)
 
-# Instalar dependencias
+```bash
+# 1. Clonar el repo y entrar al directorio
+cd StorIA
+
+# 2. Crear el venv con Python 3.12 EXPLÍCITAMENTE
+#    (sustituye la ruta por la de tu instalación si es distinta)
+/Users/$USER/.pyenv/versions/3.12.8/bin/python3.12 -m venv venv
+
+# 3. Activar el venv
+source venv/bin/activate
+
+# 4. Verificar que estás en 3.12 antes de continuar
+python --version   # debe decir Python 3.12.x
+
+# 5. Actualizar pip e instalar dependencias
+pip install --upgrade pip
 pip install -r requirements.txt
 
-# Configurar variables de entorno
-copy .env.example .env
-# Editar .env con tus credenciales
+# 6. Configurar variables de entorno
+cp .env.example .env
+# Edita .env si necesitas cambiar credenciales o tokens
 
-# Iniciar PostgreSQL (opcional con Docker)
-docker-compose up -d
+# 7. Levantar PostgreSQL y Redis con Docker
+#    (asegúrate de que Docker Desktop está corriendo)
+docker compose up -d
 
-# Ejecutar script de inicialización de base de datos
+# 8. Esperar a que Postgres acepte conexiones
+until docker exec storai-postgres pg_isready -U postgres >/dev/null 2>&1; do sleep 1; done
+
+# 9. Crear tablas e insertar datos de prueba
 python scripts/seed_db.py
 
-# Iniciar servidor FastAPI
+# 10. Levantar el servidor FastAPI
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-# Iniciar Bot de Telegram (en terminal separado)
+En otra terminal (con el venv activado) puedes arrancar el bot de Telegram:
+
+```bash
+source venv/bin/activate
 python -m app.telegram_bot.bot
+```
+
+## Verificación
+
+Con el servidor corriendo:
+
+```bash
+curl http://localhost:8000/health
+# {"status":"healthy"}
+
+curl http://localhost:8000/
+# {"message":"StorAI API","version":"1.0.0", ...}
+```
+
+O abre en el navegador:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## Credenciales de prueba (creadas por seed_db.py)
+
+| Rol      | Usuario  | Password    | Telegram ID  |
+|----------|----------|-------------|--------------|
+| Admin    | admin    | admin123    | 123456789    |
+| Gerente  | gerente  | gerente123  | 987654321    |
+| Operario | operario | operario123 | 555555555    |
+
+## Detener el entorno
+
+```bash
+# Apagar FastAPI: Ctrl+C en la terminal donde corre uvicorn
+# Apagar contenedores:
+docker compose down
+
+# Borrar también los volúmenes (resetea la BD):
+docker compose down -v
+```
+
+## Notas de compatibilidad
+
+- **DATABASE_URL** usa el driver `postgresql+psycopg://...` (psycopg v3). No uses el esquema `postgresql://` solo, porque SQLAlchemy intentaría cargar `psycopg2` que no está en `requirements.txt`.
+- **bcrypt está fijado a 4.0.1** por compatibilidad con `passlib==1.7.4`. Las versiones 5.x rompen `passlib.handlers.bcrypt`.
+- **psycopg[binary]==3.2.13** es el mínimo con wheels publicados en PyPI.
+
+## Instalación en Windows
+
+```powershell
+# Crear venv con Python 3.12 (instálalo desde python.org si no lo tienes)
+py -3.12 -m venv venv
+venv\Scripts\activate
+
+python --version   # debe ser 3.12.x
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+copy .env.example .env
+
+docker compose up -d
+python scripts\seed_db.py
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ## Documentación de la API

@@ -6,14 +6,14 @@ from app.api.deps import get_db, get_current_active_user
 from app.models.users import User
 from app.models.locations import Location, ProductLocation
 from app.schemas.locations import (
-    LocationCreate, LocationUpdate, Location,
-    ProductLocationCreate, ProductLocationUpdate, ProductLocation
+    LocationCreate, LocationUpdate, Location as LocationSchema,
+    ProductLocationCreate, ProductLocationUpdate, ProductLocation as ProductLocationSchema,
 )
 
 router = APIRouter()
 
 
-@router.post("/locations/", response_model=Location, status_code=status.HTTP_201_CREATED)
+@router.post("/locations/", response_model=LocationSchema, status_code=status.HTTP_201_CREATED)
 def create_location(
     location: LocationCreate,
     db: Session = Depends(get_db),
@@ -28,7 +28,7 @@ def create_location(
     return db_location
 
 
-@router.get("/locations/", response_model=List[Location])
+@router.get("/locations/", response_model=List[LocationSchema])
 def list_locations(
     skip: int = 0,
     limit: int = 100,
@@ -40,7 +40,7 @@ def list_locations(
     return locations
 
 
-@router.get("/locations/{location_id}", response_model=Location)
+@router.get("/locations/{location_id}", response_model=LocationSchema)
 def get_location(
     location_id: int,
     db: Session = Depends(get_db),
@@ -53,7 +53,7 @@ def get_location(
     return location
 
 
-@router.put("/locations/{location_id}", response_model=Location)
+@router.put("/locations/{location_id}", response_model=LocationSchema)
 def update_location(
     location_id: int,
     location_update: LocationUpdate,
@@ -75,7 +75,7 @@ def update_location(
     return location
 
 
-@router.post("/product-locations/", response_model=ProductLocation, status_code=status.HTTP_201_CREATED)
+@router.post("/product-locations/", response_model=ProductLocationSchema, status_code=status.HTTP_201_CREATED)
 def assign_product_location(
     product_location: ProductLocationCreate,
     db: Session = Depends(get_db),
@@ -89,7 +89,7 @@ def assign_product_location(
     return db_product_location
 
 
-@router.get("/products/{product_id}/locations", response_model=List[ProductLocation])
+@router.get("/products/{product_id}/locations", response_model=List[ProductLocationSchema])
 def get_product_locations(
     product_id: int,
     db: Session = Depends(get_db),
@@ -102,7 +102,7 @@ def get_product_locations(
     return locations
 
 
-@router.put("/product-locations/{location_id}", response_model=ProductLocation)
+@router.put("/product-locations/{location_id}", response_model=ProductLocationSchema)
 def update_product_location(
     location_id: int,
     location_update: ProductLocationUpdate,

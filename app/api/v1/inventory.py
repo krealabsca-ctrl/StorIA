@@ -6,17 +6,17 @@ from app.api.deps import get_db, get_current_active_user
 from app.models.users import User
 from app.models.inventory import Product, Category, Brand, StockMovement, MovementType
 from app.schemas.inventory import (
-    ProductCreate, ProductUpdate, Product, ProductWithLocation,
-    CategoryCreate, CategoryUpdate, Category,
-    BrandCreate, BrandUpdate, Brand,
-    StockMovementCreate, StockMovement, StockAdjustment
+    ProductCreate, ProductUpdate, Product as ProductSchema, ProductWithLocation,
+    CategoryCreate, CategoryUpdate, Category as CategorySchema,
+    BrandCreate, BrandUpdate, Brand as BrandSchema,
+    StockMovementCreate, StockMovement as StockMovementSchema, StockAdjustment
 )
 
 router = APIRouter()
 
 
 # Category endpoints
-@router.post("/categories/", response_model=Category, status_code=status.HTTP_201_CREATED)
+@router.post("/categories/", response_model=CategorySchema, status_code=status.HTTP_201_CREATED)
 def create_category(
     category: CategoryCreate,
     db: Session = Depends(get_db),
@@ -30,7 +30,7 @@ def create_category(
     return db_category
 
 
-@router.get("/categories/", response_model=List[Category])
+@router.get("/categories/", response_model=List[CategorySchema])
 def list_categories(
     skip: int = 0,
     limit: int = 100,
@@ -42,7 +42,7 @@ def list_categories(
     return categories
 
 
-@router.get("/categories/{category_id}", response_model=Category)
+@router.get("/categories/{category_id}", response_model=CategorySchema)
 def get_category(
     category_id: int,
     db: Session = Depends(get_db),
@@ -56,7 +56,7 @@ def get_category(
 
 
 # Brand endpoints
-@router.post("/brands/", response_model=Brand, status_code=status.HTTP_201_CREATED)
+@router.post("/brands/", response_model=BrandSchema, status_code=status.HTTP_201_CREATED)
 def create_brand(
     brand: BrandCreate,
     db: Session = Depends(get_db),
@@ -70,7 +70,7 @@ def create_brand(
     return db_brand
 
 
-@router.get("/brands/", response_model=List[Brand])
+@router.get("/brands/", response_model=List[BrandSchema])
 def list_brands(
     skip: int = 0,
     limit: int = 100,
@@ -83,7 +83,7 @@ def list_brands(
 
 
 # Product endpoints
-@router.post("/products/", response_model=Product, status_code=status.HTTP_201_CREATED)
+@router.post("/products/", response_model=ProductSchema, status_code=status.HTTP_201_CREATED)
 def create_product(
     product: ProductCreate,
     db: Session = Depends(get_db),
@@ -99,7 +99,7 @@ def create_product(
     return db_product
 
 
-@router.get("/products/", response_model=List[Product])
+@router.get("/products/", response_model=List[ProductSchema])
 def list_products(
     skip: int = 0,
     limit: int = 100,
@@ -117,7 +117,7 @@ def list_products(
     return products
 
 
-@router.get("/products/{product_id}", response_model=Product)
+@router.get("/products/{product_id}", response_model=ProductSchema)
 def get_product(
     product_id: int,
     db: Session = Depends(get_db),
@@ -130,7 +130,7 @@ def get_product(
     return product
 
 
-@router.get("/products/sku/{sku}", response_model=Product)
+@router.get("/products/sku/{sku}", response_model=ProductSchema)
 def get_product_by_sku(
     sku: str,
     db: Session = Depends(get_db),
@@ -143,7 +143,7 @@ def get_product_by_sku(
     return product
 
 
-@router.put("/products/{product_id}", response_model=Product)
+@router.put("/products/{product_id}", response_model=ProductSchema)
 def update_product(
     product_id: int,
     product_update: ProductUpdate,
@@ -165,7 +165,7 @@ def update_product(
     return product
 
 
-@router.post("/products/{product_id}/stock", response_model=StockMovement)
+@router.post("/products/{product_id}/stock", response_model=StockMovementSchema)
 def adjust_stock(
     product_id: int,
     adjustment: StockAdjustment,
@@ -211,7 +211,7 @@ def adjust_stock(
     return movement
 
 
-@router.get("/products/{product_id}/movements", response_model=List[StockMovement])
+@router.get("/products/{product_id}/movements", response_model=List[StockMovementSchema])
 def get_product_movements(
     product_id: int,
     skip: int = 0,
@@ -231,7 +231,7 @@ def get_product_movements(
     return movements
 
 
-@router.get("/products/low-stock/", response_model=List[Product])
+@router.get("/products/low-stock/", response_model=List[ProductSchema])
 def get_low_stock_products(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -247,7 +247,7 @@ def get_low_stock_products(
     return products
 
 
-@router.get("/products/out-of-stock/", response_model=List[Product])
+@router.get("/products/out-of-stock/", response_model=List[ProductSchema])
 def get_out_of_stock_products(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)

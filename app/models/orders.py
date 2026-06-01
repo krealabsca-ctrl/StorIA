@@ -42,7 +42,12 @@ class Order(BaseMixin, Base):
     total_amount = Column(Float, nullable=False)
     
     # Estado
-    status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)
+    status = Column(
+        Enum(OrderStatus, name="customer_order_status",
+             values_callable=lambda x: [e.value for e in x]),
+        default=OrderStatus.PENDING,
+        nullable=False,
+    )
     is_paid = Column(Boolean, default=False)
     
     # Fechas

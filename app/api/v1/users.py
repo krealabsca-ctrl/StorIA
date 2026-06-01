@@ -5,7 +5,13 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_active_user
 from app.models.users import User
 from app.core.security import verify_password, get_password_hash, create_access_token
-from app.schemas.users import UserCreate, UserUpdate, User, UserLogin, Token
+from app.schemas.users import (
+    UserCreate,
+    UserUpdate,
+    User as UserSchema,
+    UserLogin,
+    Token,
+)
 
 router = APIRouter()
 
@@ -29,7 +35,7 @@ def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.post("/users/", response_model=User, status_code=status.HTTP_201_CREATED)
+@router.post("/users/", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
 def create_user(
     user: UserCreate,
     db: Session = Depends(get_db),
@@ -61,7 +67,7 @@ def create_user(
     return db_user
 
 
-@router.get("/users/", response_model=List[User])
+@router.get("/users/", response_model=List[UserSchema])
 def list_users(
     skip: int = 0,
     limit: int = 100,
@@ -73,7 +79,7 @@ def list_users(
     return users
 
 
-@router.get("/users/me", response_model=User)
+@router.get("/users/me", response_model=UserSchema)
 def get_current_user_info(
     current_user: User = Depends(get_current_active_user)
 ):
@@ -81,7 +87,7 @@ def get_current_user_info(
     return current_user
 
 
-@router.get("/users/{user_id}", response_model=User)
+@router.get("/users/{user_id}", response_model=UserSchema)
 def get_user(
     user_id: int,
     db: Session = Depends(get_db),
@@ -94,7 +100,7 @@ def get_user(
     return user
 
 
-@router.put("/users/{user_id}", response_model=User)
+@router.put("/users/{user_id}", response_model=UserSchema)
 def update_user(
     user_id: int,
     user_update: UserUpdate,
